@@ -1,0 +1,82 @@
+/* src/app/home/home.component.scss */
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+.column {
+  padding: 10px;
+  border-right: 1px solid rgba(255, 255, 255, 0.1); /* Vertical line between columns */
+  display: flex;
+  flex-direction: column;
+}
+
+.first-column, .last-column {
+  width: 30%; /* 30% width for the first and last columns */
+}
+
+.middle-column {
+  width: 40%; /* 40% width for the middle column */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.first-column .first-row,
+.last-column .first-row {
+  flex: 0 0 60%; /* 60% height for the first row in the first and last columns */
+}
+
+.first-column .second-row,
+.last-column .second-row {
+  flex: 0 0 40%; /* 40% height for the second row in the first and last columns */
+}
+
+.row {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Line below the row */
+}
+
+mat-form-field {
+  flex: 1; /* Make the form field fill available space */
+  margin-right: 10px;
+}
+
+button {
+  height: 56px; /* Match button height with the input field */
+}
+
+/* Ensure the mat-form-field and button together take the full width */
+.full-width {
+  flex: 1;
+  margin-right: 10px; /* Space between the input and button */
+}
+
+/* Remove border from last column to prevent double lines */
+.last-column {
+  border-right: none;
+}
+
+/* Remove border from last row to prevent double lines */
+.row:last-child {
+  border-bottom: none;
+}
+
+.mat-mdc-form-field {
+  --mat-mdc-form-field-floating-label-scale: 0.75;
+  flex-direction: column;
+  min-width: 0;
+  text-align: left;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-family: var(--mat-form-field-container-text-font);
+  line-height: var(--mat-form-field-container-text-line-height);
+  font-size: var(--mat-form-field-container-text-size);
+  letter-spacing: var(--mat-form-field-container-text-tracking);
+  font-weight: var(--mat-form-field-container-text-weight);
+
+  /* Add this line to remove any flex behavior */
+  display: block; /* or inline-block depending on your layout needs */
+}
