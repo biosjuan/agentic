@@ -40,7 +40,8 @@
 
 .middle-column .agent-cards {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap; /* Allow cards to wrap to the next line */
   gap: 10px; /* Space between cards */
   margin-bottom: 20px; /* Space between cards and cube */
 }
