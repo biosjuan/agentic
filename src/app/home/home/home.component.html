@@ -73,9 +73,19 @@
     <div class="top-row">
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Create New Agent</mat-label>
-        <input matInput />
+        <input matInput [(ngModel)]="newAgentName" />
       </mat-form-field>
-      <button mat-raised-button color="primary">GO!</button>
+      <button mat-raised-button color="primary" (click)="createAgent()">
+        GO!
+      </button>
+    </div>
+    <!-- Display created cards -->
+    <div class="agent-cards">
+      <mat-card *ngFor="let card of agentCards">
+        <mat-card-content>
+          {{ card }}
+        </mat-card-content>
+      </mat-card>
     </div>
     <!-- Animated Cube Component -->
     <div class="bottom-row">

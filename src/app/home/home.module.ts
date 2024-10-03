@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { CubeComponent } from './cube/cube.component';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [HomeComponent, CubeComponent],
@@ -21,6 +22,7 @@ import { CubeComponent } from './cube/cube.component';
     MatButtonToggleModule,
     MatTabsModule,
     MatToolbarModule,
+    MatCardModule,
   ],
 })
 export class HomeModule {}
