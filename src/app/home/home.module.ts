@@ -8,9 +8,10 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { FormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { CubeComponent } from './cube/cube.component';
 
 @NgModule({
-  declarations: [HomeComponent],
+  declarations: [HomeComponent, CubeComponent],
   imports: [
     CommonModule,
     FormsModule,

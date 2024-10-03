@@ -1,0 +1,12 @@
+<div class="cube-container">
+  <button (click)="startAnimation()">Start Animation</button>
+  <button (click)="stopAnimation()">Stop Animation</button>
+  <div class="cube" [class.animate]="isAnimating">
+    <div class="face front"></div>
+    <div class="face back"></div>
+    <div class="face left"></div>
+    <div class="face right"></div>
+    <div class="face top"></div>
+    <div class="face bottom"></div>
+  </div>
+</div>

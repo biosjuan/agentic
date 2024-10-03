@@ -1,4 +1,4 @@
-/* src/app/home/home.component.scss */
+/* src/app/home/home/home.component.scss */
 .container {
   display: flex;
   height: 100vh;
@@ -19,7 +19,30 @@
   width: 40%; /* 40% width for the middle column */
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+
+}
+
+.middle-column .top-row {
+  width: 100%; /* Ensure the row takes full width */
+  display: flex;
+  justify-content: center; /* Center items horizontally */
+  margin-bottom: 20px; /* Add some space at the bottom */
+}
+
+.middle-column .top-row mat-form-field {
+  flex: 1; /* Allow the input field to take available space */
+}
+
+.middle-column .top-row button {
+  height: 56px; /* Match the height of the input field */
+  margin-left: 10px; /* Add some space between the input and button */
+}
+
+.middle-column .bottom-row {
+  width: 100%; /* Ensure the row takes full width */
+  display: flex;
+  justify-content: center; /* Center items horizontally */
+  // margin-top: auto; /* Push to the bottom */
 }
 
 .first-column .first-row,
@@ -57,6 +80,20 @@ button {
 /* Remove border from last column to prevent double lines */
 .last-column {
   border-right: none;
+}
+
+.last-column .second-row {
+  display: flex;
+  align-items: center;
+}
+
+.last-column .second-row mat-form-field {
+  flex: 1; /* Allow the input field to take available space */
+}
+
+.last-column .second-row button {
+  height: 56px; /* Match the height of the input field */
+  margin-top: -20px;
 }
 
 /* Remove border from last row to prevent double lines */
