@@ -81,12 +81,17 @@
     </div>
     <!-- Display created cards -->
     <div class="agent-cards">
-      <mat-card *ngFor="let card of agentCards">
+      <!-- <mat-card *ngFor="let card of agentCards">
         <mat-card-content>
           {{ card.name }}
         </mat-card-content>
-      </mat-card>
+      </mat-card> -->
+      <button mat-raised-button color="primary" (click)="toggleDrawingMode()">
+        {{ isDrawingMode ? "Toggle Drag Mode" : "Toggle Drawing Mode" }}
+      </button>
+      <canvas id="drawingCanvas" width="750" height="600"></canvas>
     </div>
+
     <!-- Animated Cube Component -->
     <div class="bottom-row">
       <app-cube></app-cube>
