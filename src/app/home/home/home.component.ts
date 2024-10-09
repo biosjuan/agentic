@@ -1,9 +1,9 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { CubeComponent } from '../cube/cube.component';
 import { AgentService } from '../../services/agent.service';
-import { Agent } from 'src/app/model/agent';
+import { ConnectorsService } from '../../services/connectors.service';
 
-interface Node {
+export interface Node {
   id: string;
   x: number;
   y: number;
@@ -22,7 +22,6 @@ interface Connection {
 })
 export class HomeComponent implements AfterViewInit {
   newAgentName: string = '';
-  agentCards: Agent[] = [];
   private canvas!: HTMLCanvasElement;
   private ctx!: CanvasRenderingContext2D;
   private isDrawing = false;
@@ -30,15 +29,42 @@ export class HomeComponent implements AfterViewInit {
   isDrawingMode = false;
   private startX = 0;
   private startY = 0;
-  nodes: Node[] = [];
+  agents: Node[] = [];
   connections: Connection[] = [];
   selectedNode: Node | null = null;
 
   @ViewChild(CubeComponent) cubeComponent!: CubeComponent;
 
-  constructor(private agentService: AgentService) {}
+  constructor(
+    private agentService: AgentService,
+    private connectorService: ConnectorsService
+  ) {}
 
   ngAfterViewInit() {
+    this.canvas = document.getElementById('drawingCanvas') as HTMLCanvasElement;
+    this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D;
+
+    this.initializeCanvas();
+    this.loadAgents();
+    this.loadConnectors();
+  }
+
+  toggleDrawingMode() {
+    this.isDrawingMode = !this.isDrawingMode;
+  }
+
+  saveConnectors() {
+    this.cubeComponent.startAnimation();
+    console.log(JSON.stringify(this.connections));
+    this.agentService.saveAgents(this.agents).subscribe(() => {
+      this.cubeComponent.stopAnimation();
+    });
+    this.connectorService.saveConnectors(this.connections).subscribe(() => {
+      this.cubeComponent.stopAnimation();
+    });
+  }
+
+  private initializeCanvas() {
     this.canvas = document.getElementById('drawingCanvas') as HTMLCanvasElement;
     this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D;
 
@@ -46,21 +72,20 @@ export class HomeComponent implements AfterViewInit {
     this.canvas.addEventListener('mousemove', this.onMouseMove.bind(this));
     this.canvas.addEventListener('mouseup', this.onMouseUp.bind(this));
     this.canvas.addEventListener('mouseout', this.onMouseOut.bind(this));
-    this.loadAgents();
-
-    // this.nodes.push({ id: '1', x: 100, y: 100, text: 'Node 1' });
-    // this.nodes.push({ id: '2', x: 300, y: 300, text: 'Node 2' });
-    // this.nodes.push({ id: '3', x: 400, y: 300, text: 'Node 3' });
-    // this.render();
   }
 
-  toggleDrawingMode() {
-    this.isDrawingMode = !this.isDrawingMode;
+  private loadConnectors() {
+    this.connectorService.getConnectors().subscribe((connectors: any[]) => {
+      this.connections = connectors;
+      this.render();
+    });
   }
 
   private onMouseDown(event: MouseEvent): void {
     const { offsetX, offsetY } = event;
-    const node = this.nodes.find((n) => this.isInsideNode(n, offsetX, offsetY));
+    const node = this.agents.find((n) =>
+      this.isInsideNode(n, offsetX, offsetY)
+    );
     if (node) {
       if (this.isDrawingMode) {
         this.selectedNode = node;
@@ -90,12 +115,14 @@ export class HomeComponent implements AfterViewInit {
   }
 
   private onMouseUp(event: MouseEvent): void {
-    if (this.isDragging) {
+    if (this.isDragging && this.selectedNode) {
+      const { offsetX, offsetY } = event;
+      this.updateNodeLocation(this.selectedNode.id, offsetX, offsetY);
       this.isDragging = false;
       this.selectedNode = null;
     } else if (this.isDrawing) {
       const { offsetX, offsetY } = event;
-      const node = this.nodes.find((n) =>
+      const node = this.agents.find((n) =>
         this.isInsideNode(n, offsetX, offsetY)
       );
       if (node && this.selectedNode) {
@@ -103,6 +130,15 @@ export class HomeComponent implements AfterViewInit {
       }
       this.isDrawing = false;
       this.selectedNode = null;
+      this.render();
+    }
+  }
+
+  private updateNodeLocation(nodeId: string, newX: number, newY: number) {
+    const node = this.agents.find((n) => n.id === nodeId);
+    if (node) {
+      node.x = newX;
+      node.y = newY;
       this.render();
     }
   }
@@ -129,7 +165,7 @@ export class HomeComponent implements AfterViewInit {
     this.connections.forEach((connection) => {
       this.drawLine(connection.from, connection.to);
     });
-    this.nodes.forEach((node) => {
+    this.agents.forEach((node) => {
       this.drawNode(node);
     });
   }
@@ -219,9 +255,9 @@ export class HomeComponent implements AfterViewInit {
     this.cubeComponent.startAnimation();
     this.agentService.getAgents().subscribe(
       (agents) => {
-        this.agentCards = agents;
-        this.addNode();
+        this.agents = agents;
         this.cubeComponent.stopAnimation();
+        this.render();
       },
       (error) => {
         console.error('Error loading agents:', error);
@@ -230,37 +266,21 @@ export class HomeComponent implements AfterViewInit {
     );
   }
 
-  addNode() {
-    let xValue = 100;
-    this.agentCards.forEach((agent) => {
-      this.nodes.push({
-        id: agent.id,
-        x: xValue,
-        y: 100,
-        text: agent.name,
-      });
-      xValue += 100;
-    });
-    this.render();
-  }
-
   createAgent() {
     if (this.newAgentName.trim()) {
-      const newAgent: Agent = {
+      const randomX = Math.random() * this.canvas.width;
+      const randomY = Math.random() * this.canvas.height;
+      const newAgent: Node = {
         id: Date.now().toString(),
-        name: this.newAgentName.trim(),
+        x: randomX,
+        y: randomY,
+        text: this.newAgentName.trim(),
       };
       // Trigger cube animation for 1 second
       this.cubeComponent.startAnimation();
       this.agentService.addAgent(newAgent).subscribe(
         (agent) => {
-          this.agentCards.push(agent);
-          this.nodes.push({
-            id: agent.id,
-            x: 100 * this.agentCards.length,
-            y: 100,
-            text: agent.name,
-          });
+          this.agents.push(agent);
           this.render();
           this.newAgentName = '';
           this.cubeComponent.stopAnimation();

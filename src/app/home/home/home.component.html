@@ -89,6 +89,9 @@
       <button mat-raised-button color="primary" (click)="toggleDrawingMode()">
         {{ isDrawingMode ? "Toggle Drag Mode" : "Toggle Drawing Mode" }}
       </button>
+      <button mat-raised-button color="primary" (click)="saveConnectors()">
+        save
+      </button>
       <canvas id="drawingCanvas" width="750" height="600"></canvas>
     </div>
 

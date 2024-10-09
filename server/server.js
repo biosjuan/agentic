@@ -7,53 +7,59 @@ const cors = require("cors");
 const app = express();
 const PORT = 9000;
 const AGENTS_FILE = path.join(__dirname, "agents.json");
+const CONNECTORS_FILE = path.join(__dirname, "connectors.json");
 const TIMEOUT = 1000;
 
 app.use(bodyParser.json());
 app.use(cors());
 
-// Helper function to read agents from the JSON file
-const readAgents = () => {
-  if (!fs.existsSync(AGENTS_FILE)) {
+// Helper functions to read/write JSON files
+const readData = (file) => {
+  if (!fs.existsSync(file)) {
     return [];
   }
-  const data = fs.readFileSync(AGENTS_FILE);
+  const data = fs.readFileSync(file);
   return JSON.parse(data);
 };
 
-// Helper function to write agents to the JSON file
-const writeAgents = (agents) => {
-  fs.writeFileSync(AGENTS_FILE, JSON.stringify(agents, null, 2));
+const writeData = (file, data) => {
+  fs.writeFileSync(file, JSON.stringify(data, null, 2));
 };
 
-// Get all agents
+// Routes for agents
 app.get("/agents", (req, res) => {
-  const agents = readAgents();
+  const agents = readData(AGENTS_FILE);
   setTimeout(() => {
     res.json(agents);
   }, TIMEOUT);
 });
 
-// Add a new agent
 app.post("/agents", (req, res) => {
-  const agents = readAgents();
+  const agents = readData(AGENTS_FILE);
   const newAgent = req.body;
   agents.push(newAgent);
-  writeAgents(agents);
+  writeData(AGENTS_FILE, agents);
   setTimeout(() => {
     res.status(201).json(newAgent);
   }, TIMEOUT);
 });
 
-// Update an agent
+app.put("/agents", (req, res) => {
+  const newAgents = req.body;
+  writeData(AGENTS_FILE, newAgents);
+  setTimeout(() => {
+    res.status(200).json(newAgents);
+  }, TIMEOUT);
+});
+
 app.put("/agents/:id", (req, res) => {
-  const agents = readAgents();
+  const agents = readData(AGENTS_FILE);
   const agentId = req.params.id;
   const updatedAgent = req.body;
   const index = agents.findIndex((agent) => agent.id === agentId);
   if (index !== -1) {
     agents[index] = updatedAgent;
-    writeAgents(agents);
+    writeData(AGENTS_FILE, agents);
     setTimeout(() => {
       res.json(updatedAgent);
     }, TIMEOUT);
@@ -64,14 +70,29 @@ app.put("/agents/:id", (req, res) => {
   }
 });
 
-// Delete an agent
 app.delete("/agents/:id", (req, res) => {
-  const agents = readAgents();
+  const agents = readData(AGENTS_FILE);
   const agentId = req.params.id;
   const updatedAgents = agents.filter((agent) => agent.id !== agentId);
-  writeAgents(updatedAgents);
+  writeData(AGENTS_FILE, updatedAgents);
   setTimeout(() => {
     res.status(204).end();
+  }, TIMEOUT);
+});
+
+// Routes for connectors
+app.get("/connectors", (req, res) => {
+  const connectors = readData(CONNECTORS_FILE);
+  setTimeout(() => {
+    res.json(connectors);
+  }, TIMEOUT);
+});
+
+app.put("/connectors", (req, res) => {
+  const connectors = req.body;
+  writeData(CONNECTORS_FILE, connectors);
+  setTimeout(() => {
+    res.status(200).json(connectors);
   }, TIMEOUT);
 });
 
