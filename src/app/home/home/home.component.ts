@@ -28,6 +28,8 @@ export class HomeComponent implements AfterViewInit {
   private isDrawing = false;
   private isDragging = false;
   isDrawingMode = false;
+  isConnectionDeleteMode = false;
+  isNodeDeleteMode = false;
   private startX = 0;
   private startY = 0;
   agents: Node[] = [];
@@ -49,7 +51,20 @@ export class HomeComponent implements AfterViewInit {
     this.loadAgents();
   }
 
-  createConnection(fromId: string, toId: string) {
+  deleteConnection(fromId: string, toId: string) {
+    const connectionIndex = this.connections.findIndex(
+      (connection) => connection.from.id === fromId && connection.to.id === toId
+    );
+
+    if (connectionIndex !== -1) {
+      this.connections.splice(connectionIndex, 1);
+      this.render();
+    } else {
+      console.error('Connection not found');
+    }
+  }
+
+  private createConnection(fromId: string, toId: string) {
     const fromNode = this.agents.find((n) => n.id === fromId);
     const toNode = this.agents.find((n) => n.id === toId);
 
@@ -92,6 +107,14 @@ export class HomeComponent implements AfterViewInit {
     this.isDrawingMode = !this.isDrawingMode;
   }
 
+  toggleDeleteConnection() {
+    this.isConnectionDeleteMode = !this.isConnectionDeleteMode;
+  }
+
+  toggleDeleteNode() {
+    this.isNodeDeleteMode = !this.isNodeDeleteMode;
+  }
+
   saveConnectors() {
     this.cubeComponent.startAnimation();
     console.log(JSON.stringify(this.connections));
@@ -111,6 +134,7 @@ export class HomeComponent implements AfterViewInit {
     this.canvas.addEventListener('mousemove', this.onMouseMove.bind(this));
     this.canvas.addEventListener('mouseup', this.onMouseUp.bind(this));
     this.canvas.addEventListener('mouseout', this.onMouseOut.bind(this));
+    this.canvas.addEventListener('click', this.onCanvasClick.bind(this)); // Add click event listener
   }
 
   private onMouseDown(event: MouseEvent): void {
@@ -281,6 +305,63 @@ export class HomeComponent implements AfterViewInit {
       midY - headLength * Math.sin(angle + Math.PI / 6)
     );
     this.ctx.stroke();
+  }
+
+  private onCanvasClick(event: MouseEvent): void {
+    const { offsetX, offsetY } = event;
+    const clickedConnection = this.connections.find((connection) =>
+      this.isClickOnLine(
+        connection.from.x,
+        connection.from.y,
+        connection.to.x,
+        connection.to.y,
+        offsetX,
+        offsetY
+      )
+    );
+
+    const clickedNode = this.agents.find((node) =>
+      this.isInsideNode(node, offsetX, offsetY)
+    );
+
+    if (clickedNode && this.isNodeDeleteMode) {
+      this.deleteNode(clickedNode.id);
+      this.isNodeDeleteMode = false;
+    }
+
+    if (clickedConnection && this.isConnectionDeleteMode) {
+      this.deleteConnection(clickedConnection.from.id, clickedConnection.to.id);
+      this.isConnectionDeleteMode = false;
+    }
+  }
+
+  deleteNode(nodeId: string): void {
+    // Remove the node from the agents array
+    this.agents = this.agents.filter((agent) => agent.id !== nodeId);
+
+    // Remove any connections associated with the node
+    this.connections = this.connections.filter(
+      (connection) =>
+        connection.from.id !== nodeId && connection.to.id !== nodeId
+    );
+
+    // Re-render the canvas
+    this.render();
+  }
+
+  private isClickOnLine(
+    x1: number,
+    y1: number,
+    x2: number,
+    y2: number,
+    clickX: number,
+    clickY: number
+  ): boolean {
+    const tolerance = 5; // Tolerance in pixels
+    const distance =
+      Math.abs((y2 - y1) * clickX - (x2 - x1) * clickY + x2 * y1 - y2 * x1) /
+      Math.sqrt(Math.pow(y2 - y1, 2) + Math.pow(x2 - x1, 2));
+    return distance <= tolerance;
   }
 
   createAgent() {

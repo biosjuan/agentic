@@ -81,13 +81,21 @@
     </div>
     <!-- Display created cards -->
     <div class="agent-cards">
-      <!-- <mat-card *ngFor="let card of agentCards">
-        <mat-card-content>
-          {{ card.name }}
-        </mat-card-content>
-      </mat-card> -->
       <button mat-raised-button color="primary" (click)="toggleDrawingMode()">
         {{ isDrawingMode ? "Toggle Drag Mode" : "Toggle Drawing Mode" }}
+      </button>
+
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="toggleDeleteConnection()"
+      >
+        {{
+          isConnectionDeleteMode ? "Undo Delete Connector" : "Delete Connctor"
+        }}
+      </button>
+      <button mat-raised-button color="primary" (click)="toggleDeleteNode()">
+        {{ isNodeDeleteMode ? "Undo Delete Node" : "Delete Node" }}
       </button>
       <button mat-raised-button color="primary" (click)="saveConnectors()">
         save
