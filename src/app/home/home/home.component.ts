@@ -2,6 +2,7 @@ import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { CubeComponent } from '../cube/cube.component';
 import { AgentService } from '../../services/agent.service';
 import { ConnectorsService } from '../../services/connectors.service';
+import { switchMap } from 'rxjs';
 
 export interface Node {
   id: string;
@@ -46,7 +47,45 @@ export class HomeComponent implements AfterViewInit {
 
     this.initializeCanvas();
     this.loadAgents();
-    this.loadConnectors();
+  }
+
+  createConnection(fromId: string, toId: string) {
+    const fromNode = this.agents.find((n) => n.id === fromId);
+    const toNode = this.agents.find((n) => n.id === toId);
+
+    if (fromNode && toNode) {
+      this.connections.push({ from: fromNode, to: toNode });
+      this.render();
+    } else {
+      console.error('One or both nodes not found');
+    }
+  }
+
+  private loadAgents() {
+    let connections: any[] = [];
+    this.cubeComponent.startAnimation();
+    this.connectorService
+      .getConnectors()
+      .pipe(
+        switchMap((connectors: any[]) => {
+          connections = connectors;
+          return this.agentService.getAgents();
+        })
+      )
+      .subscribe({
+        next: (agents) => {
+          this.agents = agents;
+          this.cubeComponent.stopAnimation();
+          this.render();
+          connections.forEach((connection) => {
+            this.createConnection(connection.from.id, connection.to.id);
+          });
+        },
+        error: (error) => {
+          console.error('Error loading data:', error);
+          this.cubeComponent.stopAnimation();
+        },
+      });
   }
 
   toggleDrawingMode() {
@@ -72,13 +111,6 @@ export class HomeComponent implements AfterViewInit {
     this.canvas.addEventListener('mousemove', this.onMouseMove.bind(this));
     this.canvas.addEventListener('mouseup', this.onMouseUp.bind(this));
     this.canvas.addEventListener('mouseout', this.onMouseOut.bind(this));
-  }
-
-  private loadConnectors() {
-    this.connectorService.getConnectors().subscribe((connectors: any[]) => {
-      this.connections = connectors;
-      this.render();
-    });
   }
 
   private onMouseDown(event: MouseEvent): void {
@@ -249,21 +281,6 @@ export class HomeComponent implements AfterViewInit {
       midY - headLength * Math.sin(angle + Math.PI / 6)
     );
     this.ctx.stroke();
-  }
-
-  loadAgents() {
-    this.cubeComponent.startAnimation();
-    this.agentService.getAgents().subscribe(
-      (agents) => {
-        this.agents = agents;
-        this.cubeComponent.stopAnimation();
-        this.render();
-      },
-      (error) => {
-        console.error('Error loading agents:', error);
-        this.cubeComponent.stopAnimation();
-      }
-    );
   }
 
   createAgent() {
