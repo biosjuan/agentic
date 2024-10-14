@@ -18,11 +18,11 @@ interface Connection {
 }
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
+  selector: 'app-agents',
+  templateUrl: './agents.component.html',
+  styleUrls: ['./agents.component.scss'],
 })
-export class HomeComponent implements AfterViewInit {
+export class AgentsComponent implements AfterViewInit {
   newAgentName: string = '';
   private canvas!: HTMLCanvasElement;
   private ctx!: CanvasRenderingContext2D;
@@ -52,6 +52,18 @@ export class HomeComponent implements AfterViewInit {
     this.loadAgents();
   }
 
+  toggleDrawingMode() {
+    this.isDrawingMode = !this.isDrawingMode;
+  }
+
+  toggleDeleteConnection() {
+    this.isConnectionDeleteMode = !this.isConnectionDeleteMode;
+  }
+
+  toggleDeleteNode() {
+    this.isNodeDeleteMode = !this.isNodeDeleteMode;
+  }
+
   deleteConnection(fromId: string, toId: string) {
     const connectionIndex = this.connections.findIndex(
       (connection) => connection.from.id === fromId && connection.to.id === toId
@@ -65,16 +77,66 @@ export class HomeComponent implements AfterViewInit {
     }
   }
 
-  private createConnection(fromId: string, toId: string) {
-    const fromNode = this.agents.find((n) => n.id === fromId);
-    const toNode = this.agents.find((n) => n.id === toId);
+  saveConnectors() {
+    this.cubeComponent.startAnimation();
+    console.log(JSON.stringify(this.connections));
+    this.agentService.saveAgents(this.agents).subscribe(() => {
+      this.cubeComponent.stopAnimation();
+    });
+    this.connectorService.saveConnectors(this.connections).subscribe(() => {
+      this.cubeComponent.stopAnimation();
+    });
+  }
 
-    if (fromNode && toNode) {
-      this.connections.push({ from: fromNode, to: toNode });
-      this.render();
-    } else {
-      console.error('One or both nodes not found');
+  deleteNode(nodeId: string): void {
+    // Remove the node from the agents array
+    this.agents = this.agents.filter((agent) => agent.id !== nodeId);
+
+    // Remove any connections associated with the node
+    this.connections = this.connections.filter(
+      (connection) =>
+        connection.from.id !== nodeId && connection.to.id !== nodeId
+    );
+
+    // Re-render the canvas
+    this.render();
+  }
+
+  createAgent() {
+    if (this.newAgentName.trim()) {
+      const randomX = Math.random() * this.canvas.width;
+      const randomY = Math.random() * this.canvas.height;
+      const newAgent: Node = {
+        id: Date.now().toString(),
+        x: randomX,
+        y: randomY,
+        text: this.newAgentName.trim(),
+      };
+      // Trigger cube animation for 1 second
+      this.cubeComponent.startAnimation();
+      this.agentService.addAgent(newAgent).subscribe(
+        (agent) => {
+          this.agents.push(agent);
+          this.render();
+          this.newAgentName = '';
+          this.cubeComponent.stopAnimation();
+        },
+        (error) => {
+          console.error('Error creating agent:', error);
+          this.cubeComponent.stopAnimation();
+        }
+      );
     }
+  }
+
+  private render() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.connections.forEach((connection) => {
+      this.drawLine(connection.from, connection.to);
+    });
+    this.agents.forEach((node) => {
+      this.drawNode(node);
+    });
   }
 
   private loadAgents() {
@@ -91,7 +153,7 @@ export class HomeComponent implements AfterViewInit {
       .subscribe({
         next: (agents) => {
           this.agents = agents;
-
+          console.log('Agents:', this.agents);
           this.cubeComponent.stopAnimation();
           this.render();
           connections.forEach((connection) => {
@@ -105,27 +167,16 @@ export class HomeComponent implements AfterViewInit {
       });
   }
 
-  toggleDrawingMode() {
-    this.isDrawingMode = !this.isDrawingMode;
-  }
+  private createConnection(fromId: string, toId: string) {
+    const fromNode = this.agents.find((n) => n.id === fromId);
+    const toNode = this.agents.find((n) => n.id === toId);
 
-  toggleDeleteConnection() {
-    this.isConnectionDeleteMode = !this.isConnectionDeleteMode;
-  }
-
-  toggleDeleteNode() {
-    this.isNodeDeleteMode = !this.isNodeDeleteMode;
-  }
-
-  saveConnectors() {
-    this.cubeComponent.startAnimation();
-    console.log(JSON.stringify(this.connections));
-    this.agentService.saveAgents(this.agents).subscribe(() => {
-      this.cubeComponent.stopAnimation();
-    });
-    this.connectorService.saveConnectors(this.connections).subscribe(() => {
-      this.cubeComponent.stopAnimation();
-    });
+    if (fromNode && toNode) {
+      this.connections.push({ from: fromNode, to: toNode });
+      this.render();
+    } else {
+      console.error('One or both nodes not found');
+    }
   }
 
   private initializeCanvas() {
@@ -216,16 +267,6 @@ export class HomeComponent implements AfterViewInit {
       y >= node.y - height / 2 &&
       y <= node.y + height / 2
     );
-  }
-
-  private render() {
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.connections.forEach((connection) => {
-      this.drawLine(connection.from, connection.to);
-    });
-    this.agents.forEach((node) => {
-      this.drawNode(node);
-    });
   }
 
   private drawNode(node: Node) {
@@ -337,20 +378,6 @@ export class HomeComponent implements AfterViewInit {
     }
   }
 
-  deleteNode(nodeId: string): void {
-    // Remove the node from the agents array
-    this.agents = this.agents.filter((agent) => agent.id !== nodeId);
-
-    // Remove any connections associated with the node
-    this.connections = this.connections.filter(
-      (connection) =>
-        connection.from.id !== nodeId && connection.to.id !== nodeId
-    );
-
-    // Re-render the canvas
-    this.render();
-  }
-
   private isClickOnLine(
     x1: number,
     y1: number,
@@ -364,32 +391,5 @@ export class HomeComponent implements AfterViewInit {
       Math.abs((y2 - y1) * clickX - (x2 - x1) * clickY + x2 * y1 - y2 * x1) /
       Math.sqrt(Math.pow(y2 - y1, 2) + Math.pow(x2 - x1, 2));
     return distance <= tolerance;
-  }
-
-  createAgent() {
-    if (this.newAgentName.trim()) {
-      const randomX = Math.random() * this.canvas.width;
-      const randomY = Math.random() * this.canvas.height;
-      const newAgent: Node = {
-        id: Date.now().toString(),
-        x: randomX,
-        y: randomY,
-        text: this.newAgentName.trim(),
-      };
-      // Trigger cube animation for 1 second
-      this.cubeComponent.startAnimation();
-      this.agentService.addAgent(newAgent).subscribe(
-        (agent) => {
-          this.agents.push(agent);
-          this.render();
-          this.newAgentName = '';
-          this.cubeComponent.stopAnimation();
-        },
-        (error) => {
-          console.error('Error creating agent:', error);
-          this.cubeComponent.stopAnimation();
-        }
-      );
-    }
   }
 }

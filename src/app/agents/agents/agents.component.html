@@ -1,0 +1,127 @@
+<div class="container">
+  <div class="column">
+    <div class="row">
+      <mat-toolbar>
+        <span>Agent Properties</span>
+      </mat-toolbar>
+    </div>
+    <div class="row">
+      <mat-tab-group>
+        <mat-tab label="General">
+          <mat-form-field class="textarea-container">
+            <textarea matInput rows="22"></textarea>
+          </mat-form-field>
+        </mat-tab>
+        <mat-tab label="Advanced">
+          <mat-form-field>
+            <textarea matInput rows="22"></textarea>
+          </mat-form-field>
+        </mat-tab>
+        <mat-tab label="Eval & Explainability">
+          <mat-form-field>
+            <textarea matInput rows="22"></textarea>
+          </mat-form-field>
+        </mat-tab>
+      </mat-tab-group>
+      <button class="run-prompt-button" mat-raised-button color="primary">
+        Run Prompt >>
+      </button>
+      <h4>Select Grouping</h4>
+      <mat-form-field appearance="outline" class="full-width">
+        <select matNativeControl>
+          <option value="volvo">Calibration Agents</option>
+          <option value="saab">Saab</option>
+          <option value="mercedes">Mercedes</option>
+          <option value="audi">Audi</option>
+        </select>
+      </mat-form-field>
+      <h4>Dependency</h4>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Select Dependency</mat-label>
+        <select matNativeControl>
+          <option value="volvo">None</option>
+          <option value="saab">Saab</option>
+          <option value="mercedes">Mercedes</option>
+          <option value="audi">Audi</option>
+        </select>
+      </mat-form-field>
+      <h4>Select Model</h4>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Select Model</mat-label>
+        <select matNativeControl>
+          <option value="volvo">Internal LLM</option>
+          <option value="saab">Saab</option>
+          <option value="mercedes">Mercedes</option>
+          <option value="audi">Audi</option>
+        </select>
+      </mat-form-field>
+      <button mat-raised-button color="primary">Update</button>
+    </div>
+  </div>
+  <div class="column">
+    <div class="form-container">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Create New Agent</mat-label>
+        <input matInput [(ngModel)]="newAgentName" />
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="createAgent()">
+        GO!
+      </button>
+    </div>
+    <div class="button-group">
+      <button mat-raised-button color="primary" (click)="toggleDrawingMode()">
+        {{ isDrawingMode ? "Toggle Drag Mode" : "Toggle Drawing Mode" }}
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="toggleDeleteConnection()"
+      >
+        {{
+          isConnectionDeleteMode ? "Undo Delete Connector" : "Delete Connector"
+        }}
+      </button>
+      <button mat-raised-button color="primary" (click)="toggleDeleteNode()">
+        {{ isNodeDeleteMode ? "Undo Delete Node" : "Delete Node" }}
+      </button>
+      <button mat-raised-button color="primary" (click)="saveConnectors()">
+        save
+      </button>
+    </div>
+    <div class="row canvas-container">
+      <canvas id="drawingCanvas" width="750" height="600"></canvas>
+      <app-cube></app-cube>
+    </div>
+  </div>
+  <div class="column">
+    <div class="row">
+      <mat-toolbar>
+        <span>Output</span>
+      </mat-toolbar>
+    </div>
+    <div class="row">
+      <mat-tab-group>
+        <mat-tab label="Text Items">
+          <mat-form-field>
+            <textarea matInput rows="22"></textarea>
+          </mat-form-field>
+        </mat-tab>
+        <mat-tab label="Spoken Items">
+          <mat-form-field>
+            <textarea matInput rows="22"></textarea>
+          </mat-form-field>
+        </mat-tab>
+        <mat-tab label="Multiple Choice">
+          <mat-form-field>
+            <textarea matInput rows="22"></textarea>
+          </mat-form-field>
+        </mat-tab>
+      </mat-tab-group>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Search Items</mat-label>
+        <input matInput />
+      </mat-form-field>
+      <button mat-raised-button color="primary">GO!</button>
+    </div>
+  </div>
+</div>
