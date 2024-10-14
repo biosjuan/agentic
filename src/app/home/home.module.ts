@@ -8,12 +8,12 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { FormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { CubeComponent } from '../components/cube/cube.component';
 import { MatCardModule } from '@angular/material/card';
 import { RouterModule } from '@angular/router';
+import { ComponentModule } from '../components/components.module';
 
 @NgModule({
-  declarations: [HomeComponent, CubeComponent],
+  declarations: [HomeComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -25,6 +25,7 @@ import { RouterModule } from '@angular/router';
     MatTabsModule,
     MatToolbarModule,
     MatCardModule,
+    ComponentModule,
   ],
 })
 export class HomeModule {}

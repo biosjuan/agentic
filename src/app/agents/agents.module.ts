@@ -10,10 +10,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { FormsModule } from '@angular/forms';
-import { CubeComponent } from '../components/cube/cube.component';
+import { ComponentModule } from '../components/components.module';
 
 @NgModule({
-  declarations: [AgentsComponent, CubeComponent],
+  declarations: [AgentsComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -25,6 +25,7 @@ import { CubeComponent } from '../components/cube/cube.component';
     MatTabsModule,
     MatToolbarModule,
     MatCardModule,
+    ComponentModule,
   ],
 })
 export class AgentsModule {}

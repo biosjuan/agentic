@@ -1,146 +1,42 @@
-/* src/app/home/home/home.component.scss */
 .container {
-  display: flex;
+  display: grid;
+  grid-template-columns: 30% 40% 30%;
+  grid-template-rows: 20% 80%;
   height: 100vh;
 }
 
 .column {
   padding: 10px;
   border-right: 1px solid rgba(255, 255, 255, 0.1); /* Vertical line between columns */
-  display: flex;
-  flex-direction: column;
 }
 
-.first-column, .last-column {
-  width: 30%; /* 30% width for the first and last columns */
+.column:first-child {
+  border-left: 1px solid rgba(255, 255, 255, 0.1); /* Vertical line on the leftmost column */
 }
 
-.middle-column {
-  width: 40%; /* 40% width for the middle column */
-  display: flex;
-  flex-direction: column;
-
-}
-
-.middle-column .top-row {
+.row {
   width: 100%; /* Ensure the row takes full width */
   display: flex;
+  flex-direction: column; /* Change to column to allow children to take full width */
   justify-content: center; /* Center items horizontally */
   margin-bottom: 20px; /* Add some space at the bottom */
 }
 
-.middle-column .top-row mat-form-field {
+.row mat-form-field {
   flex: 1; /* Allow the input field to take available space */
+  width: 100%; /* Ensure the mat-form-field takes full width */
 }
 
-.middle-column .top-row button {
-  height: 56px; /* Match the height of the input field */
-  margin-left: 10px; /* Add some space between the input and button */
+.row .run-prompt-button {
+  height: 36px; /* Make the button smaller */
+  align-self: flex-end; /* Align the button to the right */
+  margin-bottom: 30px;
 }
 
-.middle-column .agent-cards {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap; /* Allow cards to wrap to the next line */
-  gap: 10px; /* Space between cards */
-  margin-bottom: 20px; /* Space between cards and cube */
+/* Specific row for the input and button */
+.row.create-agent-row {
+  display: flex; /* Ensure flexbox is used */
+  flex-direction: row; /* Align items in a row */
+  align-items: center; /* Center items vertically */
 }
 
-.middle-column .bottom-row {
-  width: 100%; /* Ensure the row takes full width */
-  display: flex;
-  justify-content: center; /* Center items horizontally */
-  // margin-top: 20px; /* Push to the bottom */
-}
-
-.first-column .first-row,
-.last-column .first-row {
-  flex: 0 0 60%; /* 60% height for the first row in the first and last columns */
-}
-
-.first-column .second-row,
-.last-column .second-row {
-  flex: 0 0 40%; /* 40% height for the second row in the first and last columns */
-}
-
-.row {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Line below the row */
-}
-
-mat-form-field {
-  flex: 1; /* Make the form field fill available space */
-  margin-right: 10px;
-}
-
-button {
-  height: 56px; /* Match button height with the input field */
-}
-
-/* Ensure the mat-form-field and button together take the full width */
-.full-width {
-  flex: 1;
-  margin-right: 10px; /* Space between the input and button */
-}
-
-/* Remove border from last column to prevent double lines */
-.last-column {
-  border-right: none;
-}
-
-.last-column .second-row {
-  display: flex;
-  align-items: self-start;
-}
-
-.last-column .second-row mat-form-field {
-  flex: 1; /* Allow the input field to take available space */
-}
-
-.last-column .second-row button {
-  height: 56px; /* Match the height of the input field */
-  margin-top: -20px;
-}
-
-/* Remove border from last row to prevent double lines */
-.row:last-child {
-  border-bottom: none;
-}
-
-.mat-mdc-form-field {
-  --mat-mdc-form-field-floating-label-scale: 0.75;
-  flex-direction: column;
-  min-width: 0;
-  text-align: left;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  font-family: var(--mat-form-field-container-text-font);
-  line-height: var(--mat-form-field-container-text-line-height);
-  font-size: var(--mat-form-field-container-text-size);
-  letter-spacing: var(--mat-form-field-container-text-tracking);
-  font-weight: var(--mat-form-field-container-text-weight);
-
-  /* Add this line to remove any flex behavior */
-  display: block; /* or inline-block depending on your layout needs */
-}
-
-#drawingCanvas {
-  background-color: #f5f5f5; /* Off-white color */
-}
-
-canvas {
-  border: 1px solid black;
-}
-
-.node {
-  position: absolute;
-  width: 50px;
-  height: 50px;
-  background-color: lightblue;
-  border: 1px solid black;
-  text-align: center;
-  line-height: 50px;
-  cursor: pointer;
-}
