@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "text": "Item Difficulty"
+  },
+  {
+    "id": 2,
+    "text": "Taxonomy"
+  },
+  {
+    "id":3,
+    "text": "Content Evaluation"
+  },
+  {
+    "id": 4,
+    "text": "Language & Clarity"
+  },
+  {
+    "id": 5,
+    "text": "Content Diversity"
+  }
+]

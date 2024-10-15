@@ -79,7 +79,6 @@ export class AgentsComponent implements AfterViewInit {
 
   saveConnectors() {
     this.cubeComponent.startAnimation();
-    console.log(JSON.stringify(this.connections));
     this.agentService.saveAgents(this.agents).subscribe(() => {
       this.cubeComponent.stopAnimation();
     });

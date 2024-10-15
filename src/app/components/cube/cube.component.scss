@@ -18,6 +18,12 @@ button {
   transform: rotateX(36deg) rotateY(36deg); /* Start at 10% of 360 degrees */
 }
 
+.dynamic-prompt {
+  margin-top: 30px;
+  font-size: 16px;
+  color: rgba(55, 71, 79, 0.87); /* Use the desired text color */
+}
+
 .face {
   position: absolute;
   width: 50px; /* Reduced from 100px to 50px */
