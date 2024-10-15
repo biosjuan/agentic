@@ -60,11 +60,19 @@
   </div>
   <div class="column">
     <div class="form-container">
-      <mat-form-field appearance="outline" class="full-width">
+      <mat-form-field
+        appearance="outline"
+        class="full-width search-agents-field"
+      >
         <mat-label>Create New Agent</mat-label>
         <input matInput [(ngModel)]="newAgentName" />
       </mat-form-field>
-      <button mat-raised-button color="primary" (click)="createAgent()">
+      <button
+        mat-raised-button
+        color="primary"
+        class="go-button"
+        (click)="createAgent()"
+      >
         GO!
       </button>
     </div>

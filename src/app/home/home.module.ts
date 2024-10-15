@@ -11,6 +11,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { RouterModule } from '@angular/router';
 import { ComponentModule } from '../components/components.module';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [HomeComponent],
@@ -26,6 +27,7 @@ import { ComponentModule } from '../components/components.module';
     MatToolbarModule,
     MatCardModule,
     ComponentModule,
+    MatCheckboxModule,
   ],
 })
 export class HomeModule {}

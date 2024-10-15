@@ -2,12 +2,13 @@
   display: grid;
   grid-template-columns: 30% 40% 30%;
   grid-template-rows: 20% 80%;
-  height: 100vh;
+  color: whitesmoke
 }
 
 .column {
   padding: 10px;
   border-right: 1px solid rgba(255, 255, 255, 0.1); /* Vertical line between columns */
+  height: 100vh; /* Ensure the column takes full height */
 }
 
 .column:first-child {
@@ -38,5 +39,23 @@
   display: flex; /* Ensure flexbox is used */
   flex-direction: row; /* Align items in a row */
   align-items: center; /* Center items vertically */
+}
+
+.input-container {
+  display: flex;
+  align-items: start;
+}
+
+.middle-input-container {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Add a border at the bottom */
+}
+
+.search-agents-field {
+  flex: 1;
+}
+
+.container .input-container .go-button {
+  height: 56px;
+  margin-left: 8px;
 }
 
