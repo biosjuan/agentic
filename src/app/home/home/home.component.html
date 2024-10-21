@@ -36,15 +36,19 @@
       </div>
     </div>
     <div class="row">
-      <div class="row card-row">
+      <!-- <div class="row card-row">
         <mat-card appearance="outlined" *ngFor="let agent of agentViews">
           <mat-card-content>{{ agent.text }}</mat-card-content>
         </mat-card>
+      </div> -->
+      <div class="row canvas-container">
+        <canvas id="drawingCanvasHome" width="750" height="600"></canvas>
+        <app-cube></app-cube>
       </div>
     </div>
-    <div class="row">
+    <!-- <div class="row">
       <app-cube></app-cube>
-    </div>
+    </div> -->
     <div class="row card-row">
       <mat-card appearance="outlined">
         <mat-card-content>Feedback Loop</mat-card-content>
@@ -68,24 +72,4 @@
       <mat-checkbox class="example-margin">Use Playground</mat-checkbox>
     </div>
   </div>
-  <!-- <svg class="connector" xmlns="http://www.w3.org/2000/svg">
-    <line
-      x1="40%"
-      y1="20%"
-      x2="80%"
-      y2="50%"
-      stroke="rgba(55, 71, 79, 0.87)"
-      stroke-width="2"
-    />
-  </svg>
-  <svg class="connector" xmlns="http://www.w3.org/2000/svg">
-    <line
-      x1="45%"
-      y1="30%"
-      x2="55%"
-      y2="40%"
-      stroke="rgba(55, 71, 79, 0.87)"
-      stroke-width="2"
-    />
-  </svg> -->
 </div>

@@ -1,4 +1,9 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ViewChild,
+} from '@angular/core';
 
 import { AgentService } from '../../services/agent.service';
 import { ConnectorsService } from '../../services/connectors.service';
@@ -41,7 +46,8 @@ export class AgentsComponent implements AfterViewInit {
 
   constructor(
     private agentService: AgentService,
-    private connectorService: ConnectorsService
+    private connectorService: ConnectorsService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngAfterViewInit() {
@@ -50,6 +56,7 @@ export class AgentsComponent implements AfterViewInit {
 
     this.initializeCanvas();
     this.loadAgents();
+    this.cdr.detectChanges();
   }
 
   toggleDrawingMode() {
@@ -152,7 +159,6 @@ export class AgentsComponent implements AfterViewInit {
       .subscribe({
         next: (agents) => {
           this.agents = agents;
-          console.log('Agents:', this.agents);
           this.cubeComponent.stopAnimation();
           this.render();
           connections.forEach((connection) => {

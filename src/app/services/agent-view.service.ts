@@ -4,6 +4,8 @@ import { Observable } from 'rxjs/internal/Observable';
 
 export interface AgentView {
   id: string;
+  x: number;
+  y: number;
   text: string;
 }
 

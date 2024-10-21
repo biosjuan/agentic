@@ -74,11 +74,27 @@
   justify-content: flex-start; /* Align items to the start of the row */
 }
 
-/* Connector arrow styles */
-// .connector {
-//   position: absolute;
-//   width: 100%;
-//   height: 100%;
-//   pointer-events: none; /* Allow clicks to pass through the SVG */
-// }
+.canvas-container {
+  width: 100%; /* Ensure the canvas container takes full width */
+}
+
+
+.canvas-container canvas {
+  width: 100%; /* Ensure the canvas takes full width */
+  height: auto; /* Maintain aspect ratio */
+  background-color: darkgray; /* Set a background color */
+}
+
+.node {
+  // position: absolute;
+  width: 50px;
+  height: 50px;
+  background-color: lightblue;
+  border: 1px solid black;
+  text-align: center;
+  line-height: 50px;
+  cursor: pointer;
+}
+
+
 
