@@ -1,6 +1,6 @@
 [
   {
-    "id": 1,
+    "id": "1xpd",
     "x": 100,
     "y": 50,
     "text": "Item Difficulty"
@@ -30,9 +30,9 @@
     "text": "Content Diversity"
   },
   {
-    "id": 5,
+    "id": "99xpd",
     "x": 370,
-    "y": 600,
-    "text": ""
+    "y": 650,
+    "text": "juan"
   }
 ]

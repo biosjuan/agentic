@@ -9,6 +9,7 @@ const PORT = 9000;
 const AGENTS_FILE = path.join(__dirname, "agents.json");
 const CONNECTORS_FILE = path.join(__dirname, "connectors.json");
 const AGENTS_VIEWS_FILE = path.join(__dirname, "agents-view.json");
+const CONNECTORS_VIEWS_FILE = path.join(__dirname, "connectors-view.json");
 const TIMEOUT = 1000;
 
 app.use(bodyParser.json());
@@ -102,6 +103,23 @@ app.get("/agents-views", (req, res) => {
   const agentsViews = readData(AGENTS_VIEWS_FILE);
   setTimeout(() => {
     res.json(agentsViews);
+  }, TIMEOUT);
+});
+
+// Routes for connectors views
+app.get("/connectors-views", (req, res) => {
+  const connectors = readData(CONNECTORS_VIEWS_FILE);
+  setTimeout(() => {
+    res.json(connectors);
+  }, TIMEOUT);
+});
+
+app.put("/connectors-views", (req, res) => {
+  const connectors = req.body;
+  writeData(CONNECTORS_VIEWS_FILE, connectors);
+
+  setTimeout(() => {
+    res.status(200).json(connectors);
   }, TIMEOUT);
 });
 

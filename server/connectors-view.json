@@ -1,0 +1,30 @@
+[
+  {
+    "from": {
+      "id": 4,
+      "x": 430,
+      "y": 50,
+      "text": "Language & Clarity"
+    },
+    "to": {
+      "id": "99xpd",
+      "x": 370,
+      "y": 500,
+      "text": "juan"
+    }
+  },
+  {
+    "from": {
+      "id": 5,
+      "x": 550,
+      "y": 50,
+      "text": "Content Diversity"
+    },
+    "to": {
+      "id": "99xpd",
+      "x": 370,
+      "y": 500,
+      "text": "juan"
+    }
+  }
+]

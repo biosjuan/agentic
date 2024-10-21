@@ -192,7 +192,7 @@ export class AgentsComponent implements AfterViewInit {
     this.canvas.addEventListener('mousemove', this.onMouseMove.bind(this));
     this.canvas.addEventListener('mouseup', this.onMouseUp.bind(this));
     this.canvas.addEventListener('mouseout', this.onMouseOut.bind(this));
-    this.canvas.addEventListener('click', this.onCanvasClick.bind(this)); // Add click event listener
+    this.canvas.addEventListener('click', this.onCanvasClick.bind(this));
   }
 
   private onMouseDown(event: MouseEvent): void {
