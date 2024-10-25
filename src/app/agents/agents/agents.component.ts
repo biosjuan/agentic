@@ -15,6 +15,7 @@ export interface Node {
   x: number;
   y: number;
   text: string;
+  color: string;
 }
 
 interface Connection {
@@ -41,6 +42,7 @@ export class AgentsComponent implements AfterViewInit {
   agents: Node[] = [];
   connections: Connection[] = [];
   selectedNode: Node | null = null;
+  private lastClickedNode: Node | null = null;
 
   @ViewChild(CubeComponent) cubeComponent!: CubeComponent;
 
@@ -117,6 +119,7 @@ export class AgentsComponent implements AfterViewInit {
         x: randomX,
         y: randomY,
         text: this.newAgentName.trim(),
+        color: 'white', // Default color
       };
       // Trigger cube animation for 1 second
       this.cubeComponent.startAnimation();
@@ -312,7 +315,7 @@ export class AgentsComponent implements AfterViewInit {
       node.y - height / 2
     );
     this.ctx.closePath();
-    this.ctx.fillStyle = 'white';
+    this.ctx.fillStyle = node.color || 'white';
     this.ctx.fill();
     this.ctx.stroke();
 
@@ -371,6 +374,16 @@ export class AgentsComponent implements AfterViewInit {
     const clickedNode = this.agents.find((node) =>
       this.isInsideNode(node, offsetX, offsetY)
     );
+
+    if (clickedNode) {
+      // Revert the color of the last clicked node to white
+      if (this.lastClickedNode) {
+        this.lastClickedNode.color = 'white';
+      }
+      clickedNode.color = 'lightblue';
+      this.lastClickedNode = clickedNode;
+      this.render();
+    }
 
     if (clickedNode && this.isNodeDeleteMode) {
       this.deleteNode(clickedNode.id);
