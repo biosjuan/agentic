@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
+  OnInit,
   ViewChild,
 } from '@angular/core';
 
@@ -9,6 +10,7 @@ import { AgentService } from '../../services/agent.service';
 import { ConnectorsService } from '../../services/connectors.service';
 import { switchMap } from 'rxjs';
 import { CubeComponent } from '../../components/cube/cube.component';
+import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 
 export interface Node {
   id: string;
@@ -16,6 +18,7 @@ export interface Node {
   y: number;
   text: string;
   color: string;
+  prompt: string;
 }
 
 interface Connection {
@@ -28,7 +31,7 @@ interface Connection {
   templateUrl: './agents.component.html',
   styleUrls: ['./agents.component.scss'],
 })
-export class AgentsComponent implements AfterViewInit {
+export class AgentsComponent implements AfterViewInit, OnInit {
   newAgentName: string = '';
   private canvas!: HTMLCanvasElement;
   private ctx!: CanvasRenderingContext2D;
@@ -42,15 +45,32 @@ export class AgentsComponent implements AfterViewInit {
   agents: Node[] = [];
   connections: Connection[] = [];
   selectedNode: Node | null = null;
-  private lastClickedNode: Node | null = null;
+  lastClickedNode: Node | null = null;
+  form: FormGroup;
+  lastClickedNodeID: string = '';
 
   @ViewChild(CubeComponent) cubeComponent!: CubeComponent;
 
   constructor(
     private agentService: AgentService,
     private connectorService: ConnectorsService,
-    private cdr: ChangeDetectorRef
-  ) {}
+    private cdr: ChangeDetectorRef,
+    private fb: FormBuilder
+  ) {
+    this.form = this.fb.group({
+      chat: new FormControl(''),
+    });
+  }
+
+  ngOnInit(): void {
+    this.form.get('chat')?.valueChanges.subscribe((value) => {
+      // Add the value to
+      const agent = this.agents.find((a) => a.id === this.lastClickedNodeID);
+      if (agent) {
+        agent.prompt = value;
+      }
+    });
+  }
 
   ngAfterViewInit() {
     this.canvas = document.getElementById('drawingCanvas') as HTMLCanvasElement;
@@ -120,6 +140,7 @@ export class AgentsComponent implements AfterViewInit {
         y: randomY,
         text: this.newAgentName.trim(),
         color: 'white', // Default color
+        prompt: '',
       };
       // Trigger cube animation for 1 second
       this.cubeComponent.startAnimation();
@@ -162,6 +183,11 @@ export class AgentsComponent implements AfterViewInit {
       .subscribe({
         next: (agents) => {
           this.agents = agents;
+          const lastClickedNode = this.agents.find(
+            (a) => a.color === 'lightblue'
+          );
+          this.lastClickedNodeID = lastClickedNode ? lastClickedNode.id : '';
+          this.form.get('chat')?.setValue(lastClickedNode?.prompt);
           this.cubeComponent.stopAnimation();
           this.render();
           connections.forEach((connection) => {
@@ -376,6 +402,17 @@ export class AgentsComponent implements AfterViewInit {
     );
 
     if (clickedNode) {
+      if (this.lastClickedNodeID !== clickedNode.id) {
+        this.lastClickedNodeID = clickedNode.id;
+        this.form.get('chat')?.setValue(clickedNode.prompt);
+        this.agents.forEach((agent) => {
+          if (agent.id === clickedNode.id) {
+            agent.color = 'lightblue';
+          } else {
+            agent.color = 'white';
+          }
+        });
+      }
       // Revert the color of the last clicked node to white
       if (this.lastClickedNode) {
         this.lastClickedNode.color = 'white';

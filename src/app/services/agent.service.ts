@@ -8,6 +8,7 @@ export interface Node {
   y: number;
   text: string;
   color: string;
+  prompt: string;
 }
 
 @Injectable({

@@ -2,32 +2,36 @@
   {
     "from": {
       "id": "1728498720990",
-      "x": 296,
-      "y": 240,
+      "x": 130,
+      "y": 92,
       "text": "agent 1",
-      "color": "lightblue"
+      "color": "white",
+      "prompt": "this is the promtp"
     },
     "to": {
       "id": "1729790351455",
-      "x": 281,
-      "y": 122,
+      "x": 296,
+      "y": 115,
       "text": "video agent",
-      "color": "white"
+      "color": "lightblue",
+      "prompt": "this is the second prompt"
     }
   },
   {
     "from": {
       "id": "1729790351455",
-      "x": 281,
-      "y": 122,
+      "x": 296,
+      "y": 115,
       "text": "video agent",
-      "color": "white"
+      "color": "lightblue",
+      "prompt": "this is the second prompt"
     },
     "to": {
       "id": "1729790431207",
-      "x": 571,
-      "y": 110,
-      "text": "spken agent"
+      "x": 453,
+      "y": 57,
+      "text": "spken agent",
+      "color": "white"
     }
   }
 ]

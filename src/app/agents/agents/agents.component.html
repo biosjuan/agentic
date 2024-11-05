@@ -6,23 +6,35 @@
       </mat-toolbar>
     </div>
     <div class="row">
-      <mat-tab-group>
-        <mat-tab label="General">
-          <mat-form-field class="textarea-container">
-            <textarea matInput rows="22"></textarea>
-          </mat-form-field>
-        </mat-tab>
-        <mat-tab label="Advanced">
-          <mat-form-field>
-            <textarea matInput rows="22"></textarea>
-          </mat-form-field>
-        </mat-tab>
-        <mat-tab label="Eval & Explainability">
-          <mat-form-field>
-            <textarea matInput rows="22"></textarea>
-          </mat-form-field>
-        </mat-tab>
-      </mat-tab-group>
+      <form [formGroup]="form">
+        <mat-tab-group>
+          <mat-tab label="Chat">
+            <mat-form-field class="textarea-container">
+              <textarea
+                id="chat"
+                matInput
+                rows="22"
+                formControlName="chat"
+              ></textarea>
+            </mat-form-field>
+          </mat-tab>
+          <mat-tab label="General">
+            <mat-form-field class="textarea-container">
+              <textarea id="General" matInput rows="22"></textarea>
+            </mat-form-field>
+          </mat-tab>
+          <mat-tab label="Advanced">
+            <mat-form-field>
+              <textarea matInput rows="22"></textarea>
+            </mat-form-field>
+          </mat-tab>
+          <mat-tab label="Eval & Explainability">
+            <mat-form-field>
+              <textarea matInput rows="22"></textarea>
+            </mat-form-field>
+          </mat-tab>
+        </mat-tab-group>
+      </form>
       <button class="run-prompt-button" mat-raised-button color="primary">
         Run Prompt >>
       </button>
