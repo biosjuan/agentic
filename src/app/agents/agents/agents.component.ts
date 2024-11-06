@@ -48,6 +48,10 @@ export class AgentsComponent implements AfterViewInit, OnInit {
   lastClickedNode: Node | null = null;
   form: FormGroup;
   lastClickedNodeID: string = '';
+  showAnswers = false;
+  displayedText = '';
+  fullText =
+    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
 
   @ViewChild(CubeComponent) cubeComponent!: CubeComponent;
 
@@ -79,6 +83,27 @@ export class AgentsComponent implements AfterViewInit, OnInit {
     this.initializeCanvas();
     this.loadAgents();
     this.cdr.detectChanges();
+  }
+
+  runPrompt() {
+    this.showAnswers = !this.showAnswers;
+    if (this.showAnswers) {
+      this.revealText();
+    } else {
+      this.displayedText = '';
+    }
+  }
+
+  revealText() {
+    let index = 0;
+    const interval = setInterval(() => {
+      if (index < this.fullText.length) {
+        this.displayedText += this.fullText[index];
+        index++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 50); // Adjust the speed as needed
   }
 
   toggleDrawingMode() {
@@ -404,6 +429,8 @@ export class AgentsComponent implements AfterViewInit, OnInit {
     if (clickedNode) {
       if (this.lastClickedNodeID !== clickedNode.id) {
         this.lastClickedNodeID = clickedNode.id;
+        this.showAnswers = false;
+        this.displayedText = '';
         this.form.get('chat')?.setValue(clickedNode.prompt);
         this.agents.forEach((agent) => {
           if (agent.id === clickedNode.id) {

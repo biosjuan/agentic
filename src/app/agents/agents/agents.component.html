@@ -35,7 +35,13 @@
           </mat-tab>
         </mat-tab-group>
       </form>
-      <button class="run-prompt-button" mat-raised-button color="primary">
+      <button
+        *ngIf="form.get('chat')?.value"
+        (click)="runPrompt()"
+        class="run-prompt-button"
+        mat-raised-button
+        color="primary"
+      >
         Run Prompt >>
       </button>
       <h4>Select Grouping</h4>
@@ -122,9 +128,40 @@
     <div class="row">
       <mat-tab-group>
         <mat-tab label="Text Items">
-          <mat-form-field>
-            <textarea matInput rows="22"></textarea>
-          </mat-form-field>
+          <mat-card class="card-container">
+            <mat-card-header>
+              <mat-card-title>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 100 100"
+                  class="cube-svg"
+                >
+                  <rect
+                    x="25"
+                    y="25"
+                    width="50"
+                    height="50"
+                    fill="white"
+                    stroke="blue"
+                  />
+                  <line x1="25" y1="25" x2="50" y2="0" stroke="blue" />
+                  <line x1="75" y1="25" x2="50" y2="0" stroke="blue" />
+                  <line x1="75" y1="75" x2="50" y2="100" stroke="blue" />
+                  <line x1="25" y1="75" x2="50" y2="100" stroke="blue" />
+                  <line x1="25" y1="25" x2="25" y2="75" stroke="blue" />
+                  <line x1="75" y1="25" x2="75" y2="75" stroke="blue" />
+                  <line x1="50" y1="0" x2="50" y2="50" stroke="blue" />
+                  <line x1="50" y1="50" x2="50" y2="100" stroke="blue" />
+                </svg>
+                <span *ngIf="showAnswers">What is Lorem Ipsum?</span>
+              </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <!-- Add your content here -->
+              <p *ngIf="showAnswers">{{ displayedText }}</p>
+            </mat-card-content>
+          </mat-card>
         </mat-tab>
         <mat-tab label="Spoken Items">
           <mat-form-field>

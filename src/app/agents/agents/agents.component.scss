@@ -98,4 +98,8 @@
   margin-bottom: 20px; /* Margin at the bottom */
 }
 
-
+.card-container {
+  height: calc(27 * 1.5em); // Adjust the multiplier as needed to match the textarea height
+  margin-bottom: 30px;
+  overflow: auto; // Add this to handle overflow content
+}
