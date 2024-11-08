@@ -10,26 +10,26 @@
     },
     "to": {
       "id": "1729790351455",
-      "x": 296,
-      "y": 115,
+      "x": 252,
+      "y": 105,
       "text": "video agent",
       "color": "lightblue",
-      "prompt": "this is the second prompt"
+      "prompt": "What is Lorem Ipsum?"
     }
   },
   {
     "from": {
       "id": "1729790351455",
-      "x": 296,
-      "y": 115,
+      "x": 252,
+      "y": 105,
       "text": "video agent",
       "color": "lightblue",
-      "prompt": "this is the second prompt"
+      "prompt": "What is Lorem Ipsum?"
     },
     "to": {
       "id": "1729790431207",
-      "x": 453,
-      "y": 57,
+      "x": 392,
+      "y": 99,
       "text": "spken agent",
       "color": "white"
     }

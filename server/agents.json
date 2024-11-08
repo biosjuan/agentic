@@ -9,24 +9,17 @@
   },
   {
     "id": "1729790351455",
-    "x": 296,
-    "y": 115,
+    "x": 252,
+    "y": 105,
     "text": "video agent",
     "color": "lightblue",
-    "prompt": "this is the second prompt"
+    "prompt": "What is Lorem Ipsum?"
   },
   {
     "id": "1729790431207",
-    "x": 453,
-    "y": 57,
+    "x": 392,
+    "y": 99,
     "text": "spken agent",
-    "color": "white"
-  },
-  {
-    "id": "1730222813857",
-    "x": 688.1492474841399,
-    "y": 232.85830974297704,
-    "text": "agent Martin",
     "color": "white"
   }
 ]
