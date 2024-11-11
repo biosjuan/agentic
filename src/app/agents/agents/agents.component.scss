@@ -104,3 +104,10 @@
   overflow: auto; // Add this to handle overflow content
 }
 
+.button-group {
+  display: flex;
+  flex-direction: row; /* Align buttons in a row */
+  gap: 10px; /* Space between buttons */
+  margin-bottom: 20px; /* Margin at the bottom */
+}
+

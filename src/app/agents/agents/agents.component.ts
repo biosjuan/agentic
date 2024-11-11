@@ -72,6 +72,7 @@ export class AgentsComponent implements AfterViewInit, OnInit {
       const agent = this.agents.find((a) => a.id === this.lastClickedNodeID);
       if (agent) {
         agent.prompt = value;
+        this.newAgentName = agent.text;
       }
     });
   }
