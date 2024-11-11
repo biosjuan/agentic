@@ -86,6 +86,27 @@ export class AgentsComponent implements AfterViewInit, OnInit {
     this.cdr.detectChanges();
   }
 
+  updateName() {
+    if (this.newAgentName.trim()) {
+      const agent = this.agents.find((a) => a.id === this.lastClickedNodeID);
+      if (agent) {
+        agent.text = this.newAgentName.trim();
+        this.render();
+      } else {
+        console.error('Agent not found');
+      }
+    }
+  }
+
+  deleteAgent() {
+    const agent = this.agents.find((a) => a.id === this.lastClickedNodeID);
+    if (agent) {
+      this.deleteNode(agent.id);
+    } else {
+      console.error('Agent not found');
+    }
+  }
+
   runPrompt() {
     this.showAnswers = !this.showAnswers;
     if (this.showAnswers) {

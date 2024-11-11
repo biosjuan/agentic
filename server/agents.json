@@ -1,18 +1,18 @@
 [
   {
     "id": "1728498720990",
-    "x": 130,
-    "y": 92,
-    "text": "agent 1",
-    "color": "white",
+    "x": 116,
+    "y": 249,
+    "text": "agent ibe",
+    "color": "lightblue",
     "prompt": "this is the promtp"
   },
   {
     "id": "1729790351455",
-    "x": 252,
-    "y": 105,
-    "text": "video agent",
-    "color": "lightblue",
+    "x": 230,
+    "y": 101,
+    "text": "video agent updated",
+    "color": "white",
     "prompt": "What is Lorem Ipsum?"
   },
   {
