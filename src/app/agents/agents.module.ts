@@ -26,6 +26,7 @@ import { ComponentModule } from '../components/components.module';
     MatTabsModule,
     MatToolbarModule,
     MatCardModule,
+    MatInputModule,
     ComponentModule,
   ],
 })
