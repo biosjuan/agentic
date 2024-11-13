@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const fs = require("fs");
 const path = require("path");
 const cors = require("cors");
+const multer = require("multer");
 
 const app = express();
 const PORT = 9000;
@@ -14,6 +15,23 @@ const TIMEOUT = 1000;
 
 app.use(bodyParser.json());
 app.use(cors());
+
+// Configure multer for file uploads
+if (!fs.existsSync(UPLOADS_DIR)) {
+  fs.mkdirSync(UPLOADS_DIR);
+}
+
+// Configure multer for file uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, UPLOADS_DIR);
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  },
+});
+
+const upload = multer({ storage });
 
 // Helper functions to read/write JSON files
 const readData = (file) => {
@@ -121,6 +139,21 @@ app.put("/connectors-views", (req, res) => {
   setTimeout(() => {
     res.status(200).json(connectors);
   }, TIMEOUT);
+});
+
+// Route to upload files
+app.post("/upload", upload.single("file"), (req, res) => {
+  res.status(201).json({ filename: req.file.filename });
+});
+
+// Route to list uploaded files
+app.get("/files", (req, res) => {
+  fs.readdir(UPLOADS_DIR, (err, files) => {
+    if (err) {
+      return res.status(500).json({ message: "Unable to list files" });
+    }
+    res.json(files);
+  });
 });
 
 app.listen(PORT, () => {
