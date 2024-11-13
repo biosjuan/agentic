@@ -7,6 +7,7 @@ const multer = require("multer");
 
 const app = express();
 const PORT = 9000;
+const UPLOADS_DIR = path.join(__dirname, "uploads");
 const AGENTS_FILE = path.join(__dirname, "agents.json");
 const CONNECTORS_FILE = path.join(__dirname, "connectors.json");
 const AGENTS_VIEWS_FILE = path.join(__dirname, "agents-view.json");
