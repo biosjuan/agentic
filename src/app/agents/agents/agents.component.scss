@@ -115,3 +115,14 @@
   margin-left: 10px;
 }
 
+.custom-black-button {
+  background-color: black;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+
+  &:hover {
+    background-color: #333;
+  }
+}
+

@@ -76,6 +76,27 @@
                   <input matInput class="input-field" />
                 </mat-form-field>
               </mat-card-content>
+              <mat-card-actions class="button-group">
+                <label
+                  for="fileInput"
+                  class="mat-raised-button mat-primary custom-black-button"
+                >
+                  Select File
+                </label>
+                <input
+                  type="file"
+                  id="fileInput"
+                  (change)="onFileSelected($event)"
+                  style="display: none"
+                />
+                <button
+                  mat-raised-button
+                  color="primary"
+                  (click)="uploadFile()"
+                >
+                  Upload File
+                </button>
+              </mat-card-actions>
             </mat-card>
           </mat-form-field>
         </mat-tab>

@@ -11,6 +11,7 @@ import { ConnectorsService } from '../../services/connectors.service';
 import { switchMap } from 'rxjs';
 import { CubeComponent } from '../../components/cube/cube.component';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { FileUploadService } from 'src/app/services/file-upload.service';
 
 export interface Node {
   id: string;
@@ -19,6 +20,7 @@ export interface Node {
   text: string;
   color: string;
   prompt: string;
+  file?: string;
 }
 
 interface Connection {
@@ -52,12 +54,14 @@ export class AgentsComponent implements AfterViewInit, OnInit {
   displayedText = '';
   fullText =
     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
+  selectedFile: File | null = null;
 
   @ViewChild(CubeComponent) cubeComponent!: CubeComponent;
 
   constructor(
     private agentService: AgentService,
     private connectorService: ConnectorsService,
+    private fileUploadService: FileUploadService,
     private cdr: ChangeDetectorRef,
     private fb: FormBuilder
   ) {
@@ -495,5 +499,33 @@ export class AgentsComponent implements AfterViewInit, OnInit {
       Math.abs((y2 - y1) * clickX - (x2 - x1) * clickY + x2 * y1 - y2 * x1) /
       Math.sqrt(Math.pow(y2 - y1, 2) + Math.pow(x2 - x1, 2));
     return distance <= tolerance;
+  }
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
+    }
+  }
+
+  uploadFile() {
+    if (this.selectedFile && this.lastClickedNodeID) {
+      this.fileUploadService.upload(this.selectedFile).subscribe(
+        (response) => {
+          console.log('File uploaded successfully', response);
+          const agent = this.agents.find(
+            (a) => a.id === this.lastClickedNodeID
+          );
+          if (agent) {
+            agent.file = response.filename; // Assuming the response contains the filename
+          }
+        },
+        (error) => {
+          console.error('Error uploading file:', error);
+        }
+      );
+    } else {
+      console.error('No file selected or no node selected');
+    }
   }
 }
