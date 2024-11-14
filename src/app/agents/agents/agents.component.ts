@@ -35,6 +35,8 @@ interface Connection {
 })
 export class AgentsComponent implements AfterViewInit, OnInit {
   newAgentName: string = '';
+  fileName: string = '';
+  selectedFiles: File[] = [];
   private canvas!: HTMLCanvasElement;
   private ctx!: CanvasRenderingContext2D;
   private isDrawing = false;
@@ -54,7 +56,6 @@ export class AgentsComponent implements AfterViewInit, OnInit {
   displayedText = '';
   fullText =
     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
-  selectedFiles: File[] = [];
 
   @ViewChild(CubeComponent) cubeComponent!: CubeComponent;
 
@@ -509,9 +510,19 @@ export class AgentsComponent implements AfterViewInit, OnInit {
   }
 
   uploadFile() {
-    if (this.selectedFiles.length > 0 && this.lastClickedNodeID) {
+    if (
+      this.selectedFiles.length > 0 &&
+      this.lastClickedNodeID &&
+      this.fileName
+    ) {
       this.selectedFiles.forEach((file) => {
-        this.fileUploadService.upload(file).subscribe(
+        const fileExtension = file.name.split('.').pop();
+        const fullFileName = `${this.fileName}.${fileExtension}`;
+
+        const formData: FormData = new FormData();
+        formData.append('file', file, fullFileName);
+
+        this.fileUploadService.upload(formData).subscribe(
           (response) => {
             console.log('File uploaded successfully', response);
             const agent = this.agents.find(
@@ -533,7 +544,9 @@ export class AgentsComponent implements AfterViewInit, OnInit {
         );
       });
     } else {
-      console.error('No files selected or no node selected');
+      console.error(
+        'No files selected, no node selected, or no filename provided'
+      );
     }
   }
 }
