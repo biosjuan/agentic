@@ -535,6 +535,8 @@ export class AgentsComponent implements AfterViewInit, OnInit {
               if (response && response.filename) {
                 agent.files.push(response.filename);
                 this.saveConnectors();
+                this.selectedFiles = [];
+                this.fileName = '';
               }
             }
           },

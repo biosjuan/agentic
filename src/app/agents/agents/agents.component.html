@@ -80,6 +80,12 @@
                 <mat-label>File Name</mat-label>
                 <input matInput [(ngModel)]="fileName" class="input-field" />
               </mat-form-field>
+              <div *ngIf="selectedFiles.length > 0">
+                <h4>Selected Files:</h4>
+                <ul>
+                  <li *ngFor="let file of selectedFiles">{{ file.name }}</li>
+                </ul>
+              </div>
             </mat-card-content>
             <mat-card-actions class="button-group">
               <label
