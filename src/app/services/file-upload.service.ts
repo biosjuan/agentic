@@ -46,6 +46,12 @@ export class FileUploadService {
       .pipe(catchError(this.handleError));
   }
 
+  deleteFile(filename: string): Observable<any> {
+    return this.http
+      .delete(`${this.baseUrl}/files/${filename}`)
+      .pipe(catchError(this.handleError));
+  }
+
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'Unknown error!';
     if (error.error instanceof ErrorEvent) {

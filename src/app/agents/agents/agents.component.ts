@@ -103,6 +103,14 @@ export class AgentsComponent implements AfterViewInit, OnInit {
     }
   }
 
+  getAgentFiles() {
+    const agent = this.agents.find((a) => a.id === this.lastClickedNodeID);
+    if (agent) {
+      return agent.files || [];
+    }
+    return [];
+  }
+
   deleteAgent() {
     const agent = this.agents.find((a) => a.id === this.lastClickedNodeID);
     if (agent) {
@@ -509,6 +517,26 @@ export class AgentsComponent implements AfterViewInit, OnInit {
     }
   }
 
+  deleteFile(filename: string) {
+    if (confirm(`Are you sure you want to delete the file: ${filename}?`)) {
+      this.fileUploadService.deleteFile(filename).subscribe(
+        () => {
+          console.log('File deleted successfully');
+          const agent = this.agents.find(
+            (a) => a.id === this.lastClickedNodeID
+          );
+          if (agent && agent.files) {
+            agent.files = agent.files.filter((file) => file !== filename);
+            this.saveConnectors();
+          }
+        },
+        (error) => {
+          console.error('Error deleting file:', error);
+        }
+      );
+    }
+  }
+
   uploadFile() {
     if (
       this.selectedFiles.length > 0 &&
@@ -521,6 +549,7 @@ export class AgentsComponent implements AfterViewInit, OnInit {
 
         const formData: FormData = new FormData();
         formData.append('file', file, fullFileName);
+        formData.append('agentId', this.lastClickedNodeID); // Append agentId
 
         this.fileUploadService.upload(formData).subscribe(
           (response) => {

@@ -158,6 +158,18 @@ app.get("/files", (req, res) => {
   });
 });
 
+app.delete("/files/:filename", (req, res) => {
+  const filename = req.params.filename;
+  const filePath = path.join(UPLOADS_DIR, filename);
+
+  fs.unlink(filePath, (err) => {
+    if (err) {
+      return res.status(500).json({ message: "Unable to delete file" });
+    }
+    res.status(204).end();
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });

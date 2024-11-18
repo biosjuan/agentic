@@ -86,6 +86,17 @@
                   <li *ngFor="let file of selectedFiles">{{ file.name }}</li>
                 </ul>
               </div>
+              <div *ngIf="getAgentFiles().length > 0">
+                <h4>Agent Files:</h4>
+                <ul>
+                  <li
+                    *ngFor="let file of getAgentFiles()"
+                    (click)="deleteFile(file)"
+                  >
+                    {{ file }}
+                  </li>
+                </ul>
+              </div>
             </mat-card-content>
             <mat-card-actions class="button-group">
               <label
