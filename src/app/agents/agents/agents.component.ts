@@ -518,7 +518,7 @@ export class AgentsComponent implements AfterViewInit, OnInit {
   }
 
   deleteFile(filename: string) {
-    if (confirm(`Are you sure you want to delete the file: ${filename}?`)) {
+    if (true) {
       this.fileUploadService.deleteFile(filename).subscribe(
         () => {
           console.log('File deleted successfully');

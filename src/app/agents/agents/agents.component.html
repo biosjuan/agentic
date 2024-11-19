@@ -67,8 +67,7 @@
                 class="full-width search-agents-field custom-input"
               >
                 <mat-label>Search for document</mat-label>
-                <mat-icon matPrefix class="search-icon">
-                  <span class="material-symbols-outlined">search</span>
+                <mat-icon matPrefix class="search-icon" fontIcon="search">
                 </mat-icon>
                 <input matInput class="input-field" />
               </mat-form-field>
@@ -89,11 +88,15 @@
               <div *ngIf="getAgentFiles().length > 0">
                 <h4>Agent Files:</h4>
                 <ul>
-                  <li
-                    *ngFor="let file of getAgentFiles()"
-                    (click)="deleteFile(file)"
-                  >
+                  <li *ngFor="let file of getAgentFiles()" class="file-item">
                     {{ file }}
+                    <button mat-icon-button (click)="deleteFile(file)">
+                      <mat-icon
+                        aria-hidden="false"
+                        aria-label="delete"
+                        fontIcon="delete"
+                      ></mat-icon>
+                    </button>
                   </li>
                 </ul>
               </div>

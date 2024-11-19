@@ -126,6 +126,17 @@
   }
 }
 
-ul li {
-  cursor: pointer;
+// ul li {
+//   cursor: pointer;
+// }
+
+.file-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+}
+
+.file-item button {
+  margin-left: 10px;
 }

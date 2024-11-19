@@ -11,6 +11,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ComponentModule } from '../components/components.module';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [AgentsComponent],
@@ -26,7 +27,7 @@ import { ComponentModule } from '../components/components.module';
     MatTabsModule,
     MatToolbarModule,
     MatCardModule,
-    MatInputModule,
+    MatIconModule,
     ComponentModule,
   ],
 })
