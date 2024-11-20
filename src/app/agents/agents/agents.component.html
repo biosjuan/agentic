@@ -130,11 +130,32 @@
                 class="full-width custom-input"
               >
                 <mat-label>Submit a Link</mat-label>
-                <input matInput class="input-field" />
+                <input matInput class="input-field" [(ngModel)]="webLink" />
               </mat-form-field>
+              <div *ngIf="getwebLinks().length > 0">
+                <h4>Agent Files:</h4>
+                <ul>
+                  <li *ngFor="let link of getwebLinks()" class="file-item">
+                    {{ link }}
+                    <button mat-icon-button (click)="deleteLink(link)">
+                      <mat-icon
+                        aria-hidden="false"
+                        aria-label="delete"
+                        fontIcon="delete"
+                      ></mat-icon>
+                    </button>
+                  </li>
+                </ul>
+              </div>
             </mat-card-content>
             <mat-card-actions class="button-group">
-              <button mat-raised-button color="primary">Fetch webside</button>
+              <button
+                mat-raised-button
+                color="primary"
+                (click)="fetchWebLink()"
+              >
+                Fetch webside
+              </button>
             </mat-card-actions>
           </mat-card>
         </mat-tab>

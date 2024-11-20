@@ -21,6 +21,7 @@ export interface Node {
   color: string;
   prompt: string;
   files?: string[];
+  webLink?: string[];
 }
 
 interface Connection {
@@ -54,6 +55,7 @@ export class AgentsComponent implements AfterViewInit, OnInit {
   lastClickedNodeID: string = '';
   showAnswers = false;
   displayedText = '';
+  webLink = '';
   fullText =
     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
 
@@ -89,6 +91,32 @@ export class AgentsComponent implements AfterViewInit, OnInit {
     this.initializeCanvas();
     this.loadAgents();
     this.cdr.detectChanges();
+  }
+
+  fetchWebLink() {
+    const agent = this.agents.find((a) => a.id === this.lastClickedNodeID);
+    if (agent) {
+      agent.webLink = agent.webLink || [];
+      agent.webLink.push(this.webLink);
+
+      this.agentService.updateAgent(agent.id, agent).subscribe(
+        (updatedAgent) => {
+          this.saveConnectors();
+          this.webLink = '';
+        },
+        (error) => {
+          console.error('Error updating agent', error);
+        }
+      );
+    }
+  }
+
+  getwebLinks() {
+    const agent = this.agents.find((a) => a.id === this.lastClickedNodeID);
+    if (agent) {
+      return agent.webLink || [];
+    }
+    return [];
   }
 
   updateName() {
@@ -532,6 +560,23 @@ export class AgentsComponent implements AfterViewInit, OnInit {
         },
         (error) => {
           console.error('Error deleting file:', error);
+        }
+      );
+    }
+  }
+
+  deleteLink(link: string) {
+    const agent = this.agents.find((a) => a.id === this.lastClickedNodeID);
+    if (agent && agent.webLink) {
+      agent.webLink = agent.webLink.filter((l) => l !== link);
+
+      this.agentService.updateAgent(agent.id, agent).subscribe(
+        (updatedAgent) => {
+          console.log('Link deleted successfully', updatedAgent);
+          this.saveConnectors();
+        },
+        (error) => {
+          console.error('Error deleting link', error);
         }
       );
     }
